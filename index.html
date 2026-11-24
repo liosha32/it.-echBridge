@@ -252,7 +252,7 @@ footer{padding:30px 0;border-top:1px solid var(--line);color:var(--mut);font-siz
 
 <script>
 /* ПОЧТА, КУДА ПРИХОДЯТ ЗАЯВКИ */
-const OWNER="lexapolonevich98@gmail.com";
+const OWNER="Lexapolonevich98@gmail.com";
 const $=s=>document.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 $("#yr").textContent=new Date().getFullYear();
 const fine=matchMedia("(hover:hover)").matches&&!matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -375,7 +375,12 @@ $("#rform").addEventListener("submit",async e=>{
  const r=await sendMail({"Имя":name,"Оценка":"★".repeat(stars)+" ("+stars+" из 5)","Отзыв":text},"Новый отзыв на сайте Tech.Bridge");
  btn.disabled=false;
  if(r.ok){st.textContent="Спасибо за отзыв!";e.target.reset();stars=0;$$("#rate button").forEach(x=>x.classList.remove("on"))}
- else{st.className="st err";st.textContent="Не отправлено: "+r.msg+" Напишите нам в Telegram."}
+ else{
+  const mt=`mailto:${OWNER}?subject=${encodeURIComponent("Отзыв на сайте Tech.Bridge")}&body=${encodeURIComponent(`Имя: ${name}\nОценка: ${stars} из 5\nОтзыв: ${text}`)}`;
+  st.className="st err";st.innerHTML="";
+  st.append("Не отправлено: "+r.msg+" ");
+  const a=document.createElement("a");a.href=mt;a.textContent="Отправить отзыв письмом";st.append(a);
+ }
 });
 </script>
 </body>
